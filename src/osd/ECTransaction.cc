@@ -156,6 +156,7 @@ void ECTransaction::generate_transactions(
 
       opair.second.truncate = boost::none;
       opair.second.delete_first = true;
+      opair.second.init_type = PGTransaction::ObjectOperation::Init::Create();
 
       if (obc) {
 	/* We need to reapply all of the cached xattrs.
