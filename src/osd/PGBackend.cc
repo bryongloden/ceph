@@ -781,12 +781,6 @@ void PGBackend::be_compare_scrubmaps(
 	update = MAYBE;
       }
 
-      if (object_error.has_object_info_inconsistency()) {
-	errorstream << pgid << " inconsistent object_info" << "\n";
-	if (repair)
-	  update = FORCE;
-      }
-
       // recorded digest != actual digest?
       // XXX: just check if (object_error.union_shards.has_data_digest_mismatch_oi())
       if (auth_oi.is_data_digest() && auth_object.digest_present &&
@@ -807,15 +801,6 @@ void PGBackend::be_compare_scrubmaps(
 	errorstream << pgid << " recorded omap digest 0x"
 		    << std::hex << auth_oi.omap_digest << " != on disk 0x"
 		    << auth_object.omap_digest << std::dec
-		    << " on " << auth_oi.soid << "\n";
-	if (repair)
-	  update = FORCE;
-      }
-      if (auth_oi.size != auth_object.size) {
-        assert(shard_map[auth->first].has_size_mismatch_oi());
-	//++shallow_errors;
-	errorstream << pgid << " recorded size " << auth_oi.size
-		    << " != on disk size " << auth_object.size
 		    << " on " << auth_oi.soid << "\n";
 	if (repair)
 	  update = FORCE;
